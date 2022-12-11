@@ -21,10 +21,10 @@ export async function signUp(req: Request, res: Response) {
 }
 
 export async function signIn(req: Request, res: Response) {
-  const user = req.body;
+  const { email, password } = req.body;
   try {
-    const token = await userService.login(user);
-    return res.status(httpStatus.OK).send({ token });
+    const result = await userService.login({ email, password });
+    return res.status(httpStatus.OK).send(result);
   } catch (error) {
     if (error.name === 'notFoundError') {
       return res.status(httpStatus.NOT_FOUND).send(error);

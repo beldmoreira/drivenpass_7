@@ -1,4 +1,5 @@
 import { notFoundError, unauthorizedError } from '@/errors';
+import { exclude } from '@/prisma-utils';
 import userRepository from '@/repositories/users-repository';
 import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
@@ -43,13 +44,22 @@ export async function getUser(login: CreateUserParams) {
   return user;
 }
 
-export async function login(login: CreateUserParams) {
+export async function login(login: CreateUserParams): Promise<Login> {
+  const { email, password } = login;
   const user = await getUser(login);
   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-  return token;
+  return {
+    user: exclude(user, 'password'),
+    token,
+  };
 }
 
 export type CreateUserParams = Pick<User, 'email' | 'password'>;
+
+type Login = {
+  user: Pick<User, 'id' | 'email'>;
+  token: string;
+};
 
 const userService = {
   createUser,
