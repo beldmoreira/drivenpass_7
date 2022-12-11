@@ -8,36 +8,46 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  password   String
+  Session    Session[]
   Credential Credential[]
   Network    Network[]
 
   @@map("users")
 }
 
+model Session {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@map("sessions")
+}
+
 model Credential {
   id       Int    @id @default(autoincrement())
-  user     User   @relation(fields: [userId], references: [id])
   title    String
   url      String
   username String
   password String
-
-  userId Int
+  userId   Int
+  user     User   @relation(fields: [userId], references: [id])
 
   @@map("credentials")
 }
 
 model Network {
   id       Int    @id @default(autoincrement())
-  user     User   @relation(fields: [userId], references: [id])
   title    String
   network  String
   password String
   userId   Int
+  user     User   @relation(fields: [userId], references: [id])
 
   @@map("networks")
 }
