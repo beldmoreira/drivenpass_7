@@ -7,9 +7,9 @@ import { createSession } from './factories/session-factory';
 
 export async function cleanDb() {
   await prisma.session.deleteMany({});
-  await prisma.credential.deleteMany({});
-  await prisma.network.deleteMany({});
   await prisma.user.deleteMany({});
+  await prisma.network.deleteMany({});
+  await prisma.credential.deleteMany({});
 }
 
 export async function generateValidToken(user?: User) {
