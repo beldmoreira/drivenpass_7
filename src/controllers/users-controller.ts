@@ -29,6 +29,6 @@ export async function signIn(req: Request, res: Response) {
     if (error.name === 'notFoundError') {
       return res.status(httpStatus.NOT_FOUND).send(error);
     }
-    return res.status(httpStatus.BAD_REQUEST).send(error);
+    return res.status(httpStatus.UNAUTHORIZED).send({});
   }
 }
