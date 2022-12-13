@@ -13,3 +13,10 @@ export function duplicatedTitleError(): ApplicationError {
     message: 'There is already a credential with given title',
   };
 }
+
+export function invalidCredentialsError(): ApplicationError {
+  return {
+    name: 'InvalidCredentialsError',
+    message: 'email or password are incorrect',
+  };
+}
